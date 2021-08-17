@@ -1,0 +1,10 @@
+.env
+vendor
+node_modules/
+
+LocalValetDriver.php
+
+# ignore log files and databases
+*.log
+*.sql
+*.sqlite

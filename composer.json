@@ -1,0 +1,94 @@
+{
+    "name": "vendor_slug/package_slug",
+    "description": ":package_description",
+    "keywords": [
+        ":vendor_name",
+        "wordpress",
+        "package_slug"
+    ],
+    "homepage": "https://github.com/vendor_slug/package_slug",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": ":author_name",
+            "email": "author@domain.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "wordplate/framework": "^9.5"
+    },
+    "require-dev": {
+        "rarst/wps": "^1.2",
+        "rarst/laps": "^3.3.4"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "installer-paths": {
+            "public/mu-plugins/{$name}": [
+                "type:wordpress-muplugin"
+            ],
+            "public/plugins/{$name}": [
+                "type:wordpress-plugin"
+            ],
+            "public/themes/{$name}": [
+                "type:wordpress-theme"
+            ]
+        },
+        "wordpress-install-dir": "public/wordpress"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*",
+                "wpackagist-theme/*"
+            ]
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "advanced-custom-fields/advanced-custom-fields-pro",
+                "version": "5.9.8",
+                "type": "wordpress-muplugin",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://connect.advancedcustomfields.com/index.php?a=download&p=pro&k={%PLUGIN_ACF_KEY}&t={%VERSION}"
+                },
+                "require": {
+                    "composer/installers": "^1.4",
+                    "ffraenz/private-composer-installer": "^5.0"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wpml/wpml-multilingual-cms",
+                "version": "4.4.11",
+                "type": "wordpress-plugin",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://wpml.org/?download=6088&user_id={%PLUGIN_WPML_USER_ID}&subscription_key={%PLUGIN_WPML_SUBSCRIPTION_KEY}&version={%version}"
+                },
+                "require": {
+                    "composer/installers": "^1.4",
+                    "ffraenz/private-composer-installer": "^5.0"
+                }
+            }
+        }
+    ],
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
