@@ -16,6 +16,9 @@ mix.js('resources/js/app.js', 'js')
 
 mix.browserSync({
   proxy: process.env.APP_URL,
+  files: [
+    `public/themes/${theme}/**/*.(php|js|css)`
+  ],
 });
 
 if (mix.inProduction()) {
