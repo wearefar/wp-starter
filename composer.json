@@ -16,8 +16,9 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
-        "wordplate/framework": "^9.5"
+        "php": "^7.4 || ^8.0",
+        "wordplate/framework": "^9.5",
+        "advanced-custom-fields/advanced-custom-fields-pro":"*"
     },
     "require-dev": {
         "rarst/wps": "^1.2",
@@ -26,7 +27,12 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "ffraenz/private-composer-installer": true,
+            "composer/installers": true,
+            "johnpbloch/wordpress-core-installer": true
+        }
     },
     "extra": {
         "installer-paths": {
@@ -55,7 +61,7 @@
             "type": "package",
             "package": {
                 "name": "advanced-custom-fields/advanced-custom-fields-pro",
-                "version": "5.9.8",
+                "version": "5.12.2",
                 "type": "wordpress-muplugin",
                 "dist": {
                     "type": "zip",
