@@ -3,7 +3,11 @@
 require 'includes/helpers.php';
 
 add_action('after_setup_theme', function () {
-    show_admin_bar(defined('WP_DEBUG') && WP_DEBUG);
+    show_admin_bar(
+        is_user_logged_in() &&
+        defined('WP_DEBUG') &&
+        WP_DEBUG
+    );
 
     $GLOBALS['wp_rewrite']->set_permalink_structure('/%postname%/');
 
