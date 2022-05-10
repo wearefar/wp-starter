@@ -123,6 +123,16 @@ if confirm "Execute composer install"; then
     composer install
 fi
 
+if confirm "Install WordPress"; then
+    site_url=$(ask_question "Site URL" "http://$package_name.test")
+    site_title=$(ask_question "Site title" "$package_slug")
+    admin_user=$(ask_question "Admin user" "admin")
+    admin_email=$(ask_question "Admin email" "admin@admin.test")
+    admin_password=$(ask_question "Admin password" "secret")
+
+    wp core install --url="$site_url" --title="$site_title" --admin_user="$admin_user" --admin_email=admin@admin.test --admin_password=secret
+fi
+
 if confirm 'Let this script delete itself (since you only need it once)?'; then
     echo "Delete $0 !"
     sleep 1 && rm -- "$0"
