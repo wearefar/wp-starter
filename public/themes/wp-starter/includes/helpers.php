@@ -74,3 +74,10 @@ if (!function_exists('svg')) {
         );
     }
 }
+
+if (! function_exists('asset')) {
+    function asset(string $path)
+    {
+        return get_template_directory_uri().'/assets/'.$path;
+    }
+}
