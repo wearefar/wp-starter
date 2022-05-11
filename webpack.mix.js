@@ -3,6 +3,7 @@ const theme = process.env.WP_THEME;
 
 require('dotenv').config();
 
+mix.disableNotifications()
 mix.setResourceRoot('../');
 mix.setPublicPath(`public/themes/${theme}/assets`);
 
