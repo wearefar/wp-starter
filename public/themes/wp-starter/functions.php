@@ -40,3 +40,5 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('app', mix('css/app.css'), null, null);
     wp_enqueue_script('app', mix('js/app.js'), null, null, true);
 });
+
+add_filter('use_block_editor_for_post_type', '__return_false');
