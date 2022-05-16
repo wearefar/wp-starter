@@ -1,6 +1,7 @@
 <?php
 
-require 'includes/helpers.php';
+require __DIR__.'/includes/helpers.php';
+require __DIR__.'/includes/dashboard.php';
 
 add_action('after_setup_theme', function () {
     show_admin_bar(
