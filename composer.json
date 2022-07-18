@@ -16,13 +16,24 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "wordplate/framework": "^9.5",
+        "php": "^8.0.2",
+        "johnpbloch/wordpress-core-installer": "^2.0",
+        "johnpbloch/wordpress-core": "^6.0",
+        "roots/bedrock-autoloader": "^1.0",
+        "roots/wp-password-bcrypt": "^1.1",
+        "symfony/http-foundation": "^6.0",
+        "symfony/var-dumper": "^6.0",
+        "vlucas/phpdotenv": "^5.4",
         "advanced-custom-fields/advanced-custom-fields-pro":"*"
     },
     "require-dev": {
         "rarst/wps": "^1.2",
         "rarst/laps": "^3.3.4"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "config": {
         "optimize-autoloader": true,

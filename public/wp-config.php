@@ -1,81 +1,90 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Register The Composer Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader
-| for our application. We just need to utilize it! We'll require it
-| into the script here so that we do not have to worry about the
-| loading of any our classes "manually".
-|
-*/
+declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-/*
-|--------------------------------------------------------------------------
-| Create The Application
-|--------------------------------------------------------------------------
-|
-| The first thing we will do is create a new WordPlate application instance
-| which serves as the "glue" for all the components of WordPlate, and is
-| the container for the system binding all of the various parts.
-|
-*/
+use Dotenv\Dotenv;
+use Symfony\Component\HttpFoundation\Request;
 
-$application = new WordPlate\Application(
-    realpath(__DIR__ . '/../')
-);
+// Load the environment variables.
+Dotenv::createImmutable(realpath(__DIR__ . '/../'))->safeLoad();
 
-/*
-|--------------------------------------------------------------------------
-| Custom WordPress Constants
-|--------------------------------------------------------------------------
-|
-| Below you can add custom WordPress constants which aren't specified in
-| application class. You may of course use the env() helper function.
-|
-*/
+// Set the environment type.
+define('WP_ENVIRONMENT_TYPE', env('WP_ENVIRONMENT_TYPE', 'production'));
 
-// define('WP_ALLOW_MULTISITE', env('WP_ALLOW_MULTISITE', true));
+// For developers: WordPress debugging mode.
+$isDebugModeEnabled = env('WP_DEBUG', false);
+define('WP_DEBUG', $isDebugModeEnabled);
+define('WP_DEBUG_LOG', env('WP_DEBUG_LOG', false));
+define('WP_DEBUG_DISPLAY', env('WP_DEBUG_DISPLAY', $isDebugModeEnabled));
+define('SCRIPT_DEBUG', env('SCRIPT_DEBUG', $isDebugModeEnabled));
+define('WP_DEBUG_TEMPLATES', env('WP_DEBUG_TEMPLATES', env('WP_DEBUG', false)));
 
-/*
-|--------------------------------------------------------------------------
-| WordPress Database Table Prefix
-|--------------------------------------------------------------------------
-|
-| You can have multiple installations in one database if you give each
-| a unique prefix. Only numbers, letters, and underscores please!
-|
-*/
+// The database configuration with database name, username, password,
+// hostname charset and database collae type.
+define('DB_NAME', env('DB_NAME'));
+define('DB_USER', env('DB_USER'));
+define('DB_PASSWORD', env('DB_PASSWORD'));
+define('DB_HOST', env('DB_HOST', '127.0.0.1'));
+define('DB_CHARSET', env('DB_CHARSET', 'utf8mb4'));
+define('DB_COLLATE', env('DB_COLLATE', 'utf8mb4_unicode_ci'));
 
-$table_prefix = env('WP_PREFIX', 'wp_');
+// Detect HTTPS behind a reverse proxy or a load balancer.
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
 
-/*
-|--------------------------------------------------------------------------
-| Run The Application
-|--------------------------------------------------------------------------
-|
-| Once we have the application, we can start the engine. This bootstraps
-| the framework and gets it ready for use, then it will load up this
-| application so that we can run it and send the responses back to the
-| browser and delight our users.
-|
-*/
+// Set the unique authentication keys and salts.
+define('AUTH_KEY', env('AUTH_KEY'));
+define('SECURE_AUTH_KEY', env('SECURE_AUTH_KEY'));
+define('LOGGED_IN_KEY', env('LOGGED_IN_KEY'));
+define('NONCE_KEY', env('NONCE_KEY'));
+define('AUTH_SALT', env('AUTH_SALT'));
+define('SECURE_AUTH_SALT', env('SECURE_AUTH_SALT'));
+define('LOGGED_IN_SALT', env('LOGGED_IN_SALT'));
+define('NONCE_SALT', env('NONCE_SALT'));
 
-$application->run();
+// Set the home url to the current domain.
+define('WP_HOME', $_ENV['WP_HOME'] ?? Request::createFromGlobals()->getSchemeAndHttpHost());
 
-/*
-|--------------------------------------------------------------------------
-| Bootstrap WordPress Framework
-|--------------------------------------------------------------------------
-|
-| The settings file is used to set up and fix common variables and include
-| the WordPress procedural and class library. We also need to keep this
-| include here in order to support WP-CLI.
-|
-*/
+// Set the WordPress directory path.
+define('WP_SITEURL', env('WP_SITEURL', sprintf('%s/%s', WP_HOME, env('WP_DIR', 'wordpress'))));
+
+// Set the WordPress content directory path.
+define('WP_CONTENT_DIR', env('WP_CONTENT_DIR', realpath(__DIR__ . '/../public')));
+define('WP_CONTENT_URL', env('WP_CONTENT_URL', WP_HOME));
+
+// Set the trash to less days to optimize WordPress.
+define('EMPTY_TRASH_DAYS', env('EMPTY_TRASH_DAYS', 7));
+
+// Set the default WordPress theme.
+define('WP_DEFAULT_THEME', env('WP_DEFAULT_THEME', 'wordplate'));
+
+// Constant to configure core updates.
+define('WP_AUTO_UPDATE_CORE', env('WP_AUTO_UPDATE_CORE', 'minor'));
+
+// Specify the number of post revisions.
+define('WP_POST_REVISIONS', env('WP_POST_REVISIONS', 2));
+
+// Disable technical issues emails.
+define('WP_DISABLE_FATAL_ERROR_HANDLER', $_ENV['WP_DISABLE_FATAL_ERROR_HANDLER'] ?? false);
+
+// Cleanup WordPress image edits.
+define('IMAGE_EDIT_OVERWRITE', env('IMAGE_EDIT_OVERWRITE', true));
+
+// Prevent file edititing from the dashboard.
+define('DISALLOW_FILE_EDIT', env('DISALLOW_FILE_EDIT', true));
+
+// Disable WP-Cron (wp-cron.php) for faster performance.
+define('DISABLE_WP_CRON', $_ENV['DISABLE_WP_CRON'] ?? false);
+
+// Set the absolute path to the WordPress directory.
+if (!defined('ABSPATH')) {
+    define('ABSPATH', sprintf('%s/%s/', realpath(__DIR__ . '/../public'), env('WP_DIR', 'wordpress')));
+}
+
+// Set the database table prefix.
+$table_prefix = env('DB_TABLE_PREFIX', 'wp_');
 
 require_once ABSPATH . 'wp-settings.php';
