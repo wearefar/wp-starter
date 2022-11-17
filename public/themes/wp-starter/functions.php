@@ -1,14 +1,12 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 require __DIR__.'/includes/helpers.php';
 require __DIR__.'/includes/dashboard.php';
 
 add_action('after_setup_theme', function () {
-    show_admin_bar(
-        is_user_logged_in() &&
-        defined('WP_DEBUG') &&
-        WP_DEBUG
-    );
+    show_admin_bar(false);
 
     $GLOBALS['wp_rewrite']->set_permalink_structure('/%postname%/');
 
@@ -66,3 +64,21 @@ add_filter('script_loader_tag', function (string $tag, string $handle, string $s
 }, 10, 3);
 
 add_filter('use_block_editor_for_post_type', '__return_false');
+
+add_action('phpmailer_init', function(PHPMailer $phpmailer) {
+    $phpmailer->Host = env('MAIL_HOST', null);
+
+    $phpmailer->setFrom(
+        env('MAIL_FROM_ADDRESS', 'noreply@wearefar.com'),
+        env('MAIL_FROM_NAME', 'FAR')
+    );
+
+    if (env('MAIL_MAILER', 'mail') === 'smtp') {
+        $phpmailer->isSMTP();
+        $phpmailer->SMTPAuth = true;
+        $phpmailer->Port = env('MAIL_PORT', 25);
+        $phpmailer->Username = env('MAIL_USERNAME', null);
+        $phpmailer->Password = env('MAIL_PASSWORD', null);
+        $phpmailer->SMTPSecure = env('MAIL_ENCRYPTION', '');
+    }
+});
