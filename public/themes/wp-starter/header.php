@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body class="antialiased">
   <header>
     <nav role="navigation">
       <?php wp_nav_menu(['theme_location' => 'main']); ?>

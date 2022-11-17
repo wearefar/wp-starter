@@ -1,11 +1,10 @@
-const theme = process.env.WP_THEME
-const fg = require('fast-glob')
+const theme = process.env.WP_DEFAULT_THEME
 
 module.exports = {
-  content: fg.sync([
+  content: [
     `./public/themes/${theme}/**/*.php`,
     './resources/**/*.js',
-  ]),
+  ],
   theme: {
     extend: {},
   },

@@ -1,7 +1,7 @@
 # A modern stack for WordPress development
 
 ## Minimum Requirements
-This theme requires PHP 7.4+ and MySQL 5.7+.
+This theme requires PHP 8 and MySQL 5.7+.
 
 ## Installation
 
@@ -27,20 +27,18 @@ After installing, you should configure your web server's document / web root to 
 
 ## Building Assets
 
-[Laravel Mix](https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme) is a clean layer on top of Webpack to make the 80% use case laughably simple to execute.
-
 To install all nodeJS dependencies run
 
 ```sh
 npm install
 ```
 
-Then you can
+and then
 
 ```sh
-// Run all mix tasks...
-npm run watch
+# Start the dev server...
+npm run dev
 
-// Run all mix tasks and minify output...
-npm run prod
+# Build for production...
+npm run build
 ```

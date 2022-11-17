@@ -17,14 +17,14 @@
     ],
     "require": {
         "php": "^8.0.2",
+        "advanced-custom-fields/advanced-custom-fields-pro": "*",
+        "johnpbloch/wordpress-core": "^6.1",
         "johnpbloch/wordpress-core-installer": "^2.0",
-        "johnpbloch/wordpress-core": "^6.0",
         "roots/bedrock-autoloader": "^1.0",
         "roots/wp-password-bcrypt": "^1.1",
         "symfony/http-foundation": "^6.0",
         "symfony/var-dumper": "^6.0",
-        "vlucas/phpdotenv": "^5.4",
-        "advanced-custom-fields/advanced-custom-fields-pro":"*"
+        "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
         "rarst/wps": "^1.2",
