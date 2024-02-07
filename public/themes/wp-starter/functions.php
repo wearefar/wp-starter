@@ -38,7 +38,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_dequeue_style('global-styles');
     wp_dequeue_style('classic-theme-styles');
 
-    $manifestPath = get_theme_file_path('assets/manifest.json');
+    $manifestPath = get_theme_file_path('build/.vite/manifest.json');
 
     if (
         wp_get_environment_type() === 'local' &&
@@ -49,8 +49,8 @@ add_action('wp_enqueue_scripts', function () {
         wp_enqueue_style('app', 'http://localhost:5173/resources/css/app.css', [], null);
     } elseif (file_exists($manifestPath)) {
         $manifest = json_decode(file_get_contents($manifestPath), true);
-        wp_enqueue_script('app', get_theme_file_uri('assets/' . $manifest['resources/js/app.js']['file']), [], null);
-        wp_enqueue_style('app', get_theme_file_uri('assets/' . $manifest['resources/css/app.css']['file']), [], null);
+        wp_enqueue_script('app', get_theme_file_uri('build/' . $manifest['resources/js/app.js']['file']), [], null);
+        wp_enqueue_style('app', get_theme_file_uri('build/' . $manifest['resources/css/app.css']['file']), [], null);
     }
 });
 

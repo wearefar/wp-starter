@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
-
-require('dotenv').config();
+import 'dotenv/config'
 
 export default defineConfig(() => ({
   publicDir: 'resources/static',
