@@ -1,7 +1,7 @@
 # A modern stack for WordPress development
 
 ## Minimum Requirements
-This theme requires PHP 8 and MySQL 5.7+.
+This theme requires PHP 8.2+ and MySQL 5.7+.
 
 ## Installation
 

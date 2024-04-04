@@ -16,14 +16,15 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "advanced-custom-fields/advanced-custom-fields-pro": "*",
-        "johnpbloch/wordpress-core": "^6.1",
+        "johnpbloch/wordpress-core": "^6.5",
         "johnpbloch/wordpress-core-installer": "^2.0",
         "roots/bedrock-autoloader": "^1.0",
         "roots/wp-password-bcrypt": "^1.1",
         "symfony/http-foundation": "^6.0",
         "symfony/var-dumper": "^6.0",
+        "vinkla/extended-acf": "^14.0",
         "vlucas/phpdotenv": "^5.4"
     },
     "require-dev": {
@@ -72,7 +73,7 @@
             "type": "package",
             "package": {
                 "name": "advanced-custom-fields/advanced-custom-fields-pro",
-                "version": "5.12.2",
+                "version": "6.2.8",
                 "type": "wordpress-muplugin",
                 "dist": {
                     "type": "zip",
@@ -88,7 +89,7 @@
             "type": "package",
             "package": {
                 "name": "wpml/wpml-multilingual-cms",
-                "version": "4.4.11",
+                "version": "4.6.9",
                 "type": "wordpress-plugin",
                 "dist": {
                     "type": "zip",
