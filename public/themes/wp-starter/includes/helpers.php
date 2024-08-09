@@ -28,7 +28,7 @@ if (!function_exists('svg')) {
 
         $svg = file_get_contents($path);
 
-        echo str_replace(
+        return str_replace(
             '<svg',
             sprintf('<svg %s', $attrs),
             $svg
@@ -54,5 +54,11 @@ if (! function_exists('asset')) {
     function asset(string $path)
     {
         return get_template_directory_uri().'/assets/'.$path;
+    }
+}
+
+if (! function_exists('component')) {
+    function component(string $name, array $args = []) {
+        return get_template_part('components/'.$name, null, $args);
     }
 }
