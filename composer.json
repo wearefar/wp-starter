@@ -16,20 +16,19 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "wpengine/advanced-custom-fields-pro": "6.3.5",
-        "johnpbloch/wordpress-core": "^6.6",
-        "johnpbloch/wordpress-core-installer": "^2.0",
-        "roots/bedrock-autoloader": "^1.0",
-        "roots/wp-password-bcrypt": "^1.1",
-        "symfony/http-foundation": "^6.0",
-        "symfony/var-dumper": "^6.0",
+        "php": "^8.4",
+        "composer/installers": "^2.3",
+        "league/commonmark": "^2.7",
+        "roots/bedrock-autoloader": "^1.0.4",
+        "roots/wordpress": "^6.8",
+        "symfony/http-foundation": "^7.2",
         "vinkla/extended-acf": "^14.0",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.6",
+        "wpengine/advanced-custom-fields-pro": "^6.6",
+        "wpml/wpml-multilingual-cms": "^4.7.4"
     },
     "require-dev": {
-        "rarst/wps": "^1.2",
-        "rarst/laps": "^3.3.4"
+        "symfony/var-dumper": "^7.2"
     },
     "autoload": {
         "files": [
@@ -41,15 +40,16 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "ffraenz/private-composer-installer": true,
             "composer/installers": true,
-            "johnpbloch/wordpress-core-installer": true
+            "ffraenz/private-composer-installer": true,
+            "roots/wordpress-core-installer": true
         }
     },
     "extra": {
         "installer-paths": {
             "public/mu-plugins/{$name}": [
-                "type:wordpress-muplugin"
+                "type:wordpress-muplugin",
+                "wpengine/advanced-custom-fields-pro"
             ],
             "public/plugins/{$name}": [
                 "type:wordpress-plugin"
@@ -77,14 +77,13 @@
             "type": "package",
             "package": {
                 "name": "wpml/wpml-multilingual-cms",
-                "version": "4.6.12",
+                "version": "4.7.4",
                 "type": "wordpress-plugin",
                 "dist": {
                     "type": "zip",
                     "url": "https://wpml.org/?download=6088&user_id={%PLUGIN_WPML_USER_ID}&subscription_key={%PLUGIN_WPML_SUBSCRIPTION_KEY}&version={%version}"
                 },
                 "require": {
-                    "composer/installers": "^1.4",
                     "ffraenz/private-composer-installer": "^5.0"
                 }
             }

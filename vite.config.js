@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
 import 'dotenv/config'
+import tailwindcss from '@tailwindcss/vite'
 
-export default defineConfig(() => ({
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? process.env.PUBLIC_BASE_PATH : '/',
   publicDir: 'resources/static',
   build: {
     emptyOutDir: true,
@@ -15,4 +17,18 @@ export default defineConfig(() => ({
       ],
     },
   },
+  server: {
+    cors: true,
+  },
+  plugins: [
+    tailwindcss(),
+    {
+      name: 'php',
+      handleHotUpdate({ file, server }) {
+        if (file.endsWith('.php')) {
+          server.ws.send({ type: 'full-reload', path: '*' });
+        }
+      },
+    },
+  ],
 }));

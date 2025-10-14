@@ -6,8 +6,5 @@
   <?php wp_head(); ?>
 </head>
 <body class="antialiased">
-  <header>
-    <nav role="navigation">
-      <?php wp_nav_menu(['theme_location' => 'main']); ?>
-    </nav>
-  </header>
+  <?php component('site-header'); ?>
+  <main>
