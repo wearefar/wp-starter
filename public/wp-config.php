@@ -14,7 +14,7 @@ Dotenv::createImmutable(realpath(__DIR__ . '/../'))->safeLoad();
 define('WP_ENVIRONMENT_TYPE', env('WP_ENVIRONMENT_TYPE', 'production'));
 
 // Set the default WordPress theme.
-define('WP_DEFAULT_THEME', env('WP_DEFAULT_THEME', 'wp-starter'));
+define('WP_DEFAULT_THEME', env('WP_DEFAULT_THEME', 'package_slug'));
 
 // For developers: WordPress debugging mode.
 $isDebugModeEnabled = env('WP_DEBUG', false);

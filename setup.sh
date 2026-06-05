@@ -79,7 +79,9 @@ folder_name=$(basename "$current_directory")
 package_name=$(ask_question "Package name" "$folder_name")
 package_slug=$(slugify "$package_name" "-")
 
-package_description=$(ask_question "Package description" "Yet another WordPress site…")
+package_url_guess="https://$package_slug.com"
+
+package_description=$(ask_question "Package description" "The $package_url_guess website")
 
 echo -e "------"
 echo -e "Author    : $author_name ($author_username, $author_email)"
@@ -93,6 +95,10 @@ echo "This script will replace the above values in all relevant files in the pro
 
 if ! confirm "Modify files?"; then
     $safe_exit 1
+fi
+
+if [[ -d "public/themes/wp-starter" && "$package_slug" != "wp-starter" ]]; then
+    mv "public/themes/wp-starter" "public/themes/$package_slug"
 fi
 
 grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|author@domain.com" --exclude-dir=vendor ./* \
@@ -111,7 +117,7 @@ grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|
         | sed "s#vendor_slug#$vendor_slug#g" \
         | sed "s#:package_name#$package_name#g" \
         | sed "s#package_slug#$package_slug#g" \
-        | sed "s#starter#$package_slug#g" \
+        | sed "s#wp-starter#$package_slug#g" \
         | sed "s#:package_description#$package_description#g" \
         | sed "#^\[\]\(delete\) #d" \
         > "$temp_file"

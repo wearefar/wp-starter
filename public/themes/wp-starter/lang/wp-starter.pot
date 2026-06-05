@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: :package_name 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/wp-starter\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/package_slug\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2025-10-14T16:29:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: wp-starter\n"
+"X-Domain: package_slug\n"
 
 #. Theme Name of the theme
 #: style.css
