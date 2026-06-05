@@ -89,8 +89,6 @@ echo -e "Vendor    : $vendor_name ($vendor_slug, $vendor_url)"
 echo -e "Package   : $package_slug <$package_description>"
 echo -e "------"
 
-files=$(grep -E -r -l -i ":author|:vendor|:package|:short" --exclude-dir=vendor ./* | grep -v "$script_name")
-
 echo "This script will replace the above values in all relevant files in the project directory."
 
 if ! confirm "Modify files?"; then
@@ -101,7 +99,7 @@ if [[ -d "public/themes/wp-starter" && "$package_slug" != "wp-starter" ]]; then
     mv "public/themes/wp-starter" "public/themes/$package_slug"
 fi
 
-grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|author@domain.com" --exclude-dir=vendor ./* \
+grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|author@domain.com" --exclude-dir=vendor --exclude-dir=node_modules ./* ./.??* \
 | grep -v "$script_name" \
 | while read -r file ; do
     new_file="$file"
