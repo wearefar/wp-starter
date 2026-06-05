@@ -17,7 +17,7 @@ msgstr ""
 #. Theme Name of the theme
 #: style.css
 msgid ":package_name"
-msgstr ""
+msgstr ":package_name"
 
 #. Theme URI of the theme
 #: style.css
