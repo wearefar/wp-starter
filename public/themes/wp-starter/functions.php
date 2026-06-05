@@ -11,10 +11,10 @@ if (class_exists('SitePress')) {
 }
 
 add_action('after_setup_theme', function () {
-    load_theme_textdomain(':package_slug', get_template_directory() . '/lang');
+    load_theme_textdomain('package_slug', get_template_directory() . '/lang');
 
     register_nav_menus([
-        'main' => __('Main navigation', ':package_slug'),
+        'main' => __('Main navigation', 'package_slug'),
     ]);
 });
 
