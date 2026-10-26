@@ -11,10 +11,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.14",
-    "alpinejs": "^3.15.0",
-    "dotenv": "^17.2.3",
-    "tailwindcss": "^4.1.14",
-    "vite": "^7.1.10"
+    "@tailwindcss/vite": "^4.3.3",
+    "alpinejs": "^3.17.5",
+    "dotenv": "^18.0.9",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.5"
   }
 }
