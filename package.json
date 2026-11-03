@@ -11,6 +11,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "alpinejs": "^3.17.5",
     "dotenv": "^18.0.9",

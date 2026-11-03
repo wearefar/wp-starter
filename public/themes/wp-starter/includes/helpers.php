@@ -8,7 +8,7 @@ if (!function_exists('svg')) {
      * @param string|array $class Optional. The CSS class or array of attributes.
      * @param array $attrs Optional. Additional attributes for the SVG tag.
      */
-    function svg($name, $class = '', $attrs = [])
+    function svg(string $name, string|array $class = '', array $attrs = [])
     {
         if (is_array($class)) {
             $attrs = $class;
@@ -48,15 +48,15 @@ if (! function_exists('widont')) {
      * Prevents typographic widows by replacing the last space between words with a non-breaking space.
      *
      * @param string $string The input string.
-     * @param int $value Recursive depth for widow removal.
+     * @param int $depth Recursive depth for widow removal.
      * @return string The processed string with widows prevented.
      *
      * @see https://shauninman.com/archive/2007/01/03/widont_2_1_wordpress_plugin
      */
-    function widont($string, $value = 2)
+    function widont(string $string, int $depth = 2)
     {
-        if ($value > 2) {
-            $string = widont($string, $value - 1);
+        if ($depth > 2) {
+            $string = widont($string, $depth - 1);
         }
 
         return preg_replace('/([^\s])\s+([^\s]+)\s*$/', '$1&nbsp;$2', rtrim($string));
@@ -90,8 +90,11 @@ if (!function_exists('component')) {
 }
 
 if (! function_exists('image')) {
-    function image($image = null, $attributes = [], $size = 'large')
-    {
+    function image(
+        int|string|null $image = null,
+        array|string $attributes = [],
+        string $size = 'large'
+    ) {
         if (is_string($attributes)) {
             $attributes = ['class' => $attributes];
         }
@@ -115,7 +118,7 @@ if (! function_exists('image')) {
 }
 
 if (!function_exists('markdown')) {
-    function markdown($markdown) {
+    function markdown(string $markdown) {
         $converter = new League\CommonMark\CommonMarkConverter();
 
         $html = wp_kses_post($converter->convert($markdown)->getContent());
@@ -152,7 +155,7 @@ if (!function_exists('ujoin')) {
 }
 
 if (! function_exists('svg_to_base64')) {
-    function svg_to_base64($name) {
+    function svg_to_base64(string $name) {
         $path = get_stylesheet_directory() . "/assets/svg/$name.svg";
 
         if (!file_exists($path)) {
@@ -184,7 +187,7 @@ if (! function_exists('eager_load_post_thumbnails')) {
 }
 
 if (! function_exists('get_menu_items_by_location')) {
-    function get_menu_items_by_location($location)
+    function get_menu_items_by_location(string $location)
     {
         $locations = get_nav_menu_locations();
 

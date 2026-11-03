@@ -52,3 +52,21 @@ add_action('phpmailer_init', function(PHPMailer $phpmailer) {
         $phpmailer->SMTPSecure = env('MAIL_ENCRYPTION', '');
     }
 });
+
+add_filter('template_include', function ($template) {
+    global $wp;
+
+    if (
+        wp_get_environment_type() === 'production' &&
+        ! is_user_logged_in()
+    ) {
+        return $template;
+    }
+
+    $template = match ($wp->request) {
+        'demo/components' => locate_template('page-templates/demo-components.php'),
+        default => $template,
+    };
+
+    return $template;
+});
