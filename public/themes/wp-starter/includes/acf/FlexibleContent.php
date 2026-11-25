@@ -27,11 +27,11 @@ class PageFlexibleContent extends FieldGroup
     public function fields()
     {
         return [
-            FlexibleContent::make(__('Components', 'esbaluard'), 'components')
-                ->helpertext(__('Add components to build the page layout.', 'esbaluard'))
-                ->button(__('Add component', 'esbaluard'))
+            FlexibleContent::make(__('Components', 'package_slug'), 'components')
+                ->helpertext(__('Add components to build the page layout.', 'package_slug'))
+                ->button(__('Add component', 'package_slug'))
                 ->layouts(array_map(function ($layout) {
-                    return Layout::make(__($layout['label'], 'esbaluard'), $layout['name'])
+                    return Layout::make(__($layout['label'], 'package_slug'), $layout['name'])
                         ->layout('block')
                         ->fields($layout['fields']);
                 }, $this->layouts())),

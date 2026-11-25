@@ -36,17 +36,15 @@ add_action('wp_enqueue_scripts', function () {
 });
 
 add_action('phpmailer_init', function(PHPMailer $phpmailer) {
-    $phpmailer->Host = env('MAIL_HOST', null);
-
-    $phpmailer->setFrom(
-        env('MAIL_FROM_ADDRESS', 'noreply@wearefar.com'),
-        env('MAIL_FROM_NAME', 'FAR')
-    );
+    if (env('MAIL_FROM_ADDRESS')) {
+        $phpmailer->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME', ''));
+    }
 
     if (env('MAIL_MAILER', 'mail') === 'smtp') {
         $phpmailer->isSMTP();
+        $phpmailer->Host = env('MAIL_HOST');
         $phpmailer->SMTPAuth = true;
-        $phpmailer->Port = env('MAIL_PORT', 25);
+        $phpmailer->Port = (int) env('MAIL_PORT', 25);
         $phpmailer->Username = env('MAIL_USERNAME', null);
         $phpmailer->Password = env('MAIL_PASSWORD', null);
         $phpmailer->SMTPSecure = env('MAIL_ENCRYPTION', '');

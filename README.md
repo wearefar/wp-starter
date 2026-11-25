@@ -25,6 +25,7 @@ DB_PASSWORD=password
 WP_ENVIRONMENT_TYPE=local
 WP_DEBUG=true
 WP_DEBUG_DISPLAY=true
+WP_HOME=http://package_slug.test
 ```
 
 Add also the Salt Keys to your environment file. [Visit the salt key generator](https://wordplate.github.io/salt) and copy the randomly generated keys to your `.env` file.

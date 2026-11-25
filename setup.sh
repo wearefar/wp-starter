@@ -99,7 +99,22 @@ if [[ -d "public/themes/wp-starter" && "$package_slug" != "wp-starter" ]]; then
     mv "public/themes/wp-starter" "public/themes/$package_slug"
 fi
 
-grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|author@domain.com" --exclude-dir=vendor --exclude-dir=node_modules ./* ./.??* \
+sed_escape() {
+    # Escape characters that are special in a sed replacement using '#' as delimiter.
+    printf '%s' "$1" | sed -e 's/[\\#&]/\\&/g'
+}
+
+e_author_name=$(sed_escape "$author_name")
+e_author_username=$(sed_escape "$author_username")
+e_author_email=$(sed_escape "$author_email")
+e_vendor_url=$(sed_escape "$vendor_url")
+e_vendor_name=$(sed_escape "$vendor_name")
+e_vendor_slug=$(sed_escape "$vendor_slug")
+e_package_name=$(sed_escape "$package_name")
+e_package_slug=$(sed_escape "$package_slug")
+e_package_description=$(sed_escape "$package_description")
+
+grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|author@domain.com|wp-starter" --exclude-dir=.git --exclude-dir=vendor --exclude-dir=node_modules ./* ./.??* \
 | grep -v "$script_name" \
 | while read -r file ; do
     new_file="$file"
@@ -107,17 +122,18 @@ grep -E -r -l -i ":author|:vendor|:package|vendor_name|vendor_slug|package_slug|
     echo "adapting file $file -> $new_file"
         temp_file="$file.temp"
         < "$file" \
-          sed "s#:author_name#$author_name#g" \
-        | sed "s#:author_username#$author_username#g" \
-        | sed "s#author@domain.com#$author_email#g" \
-        | sed "s#:author_url#$vendor_url#g" \
-        | sed "s#:vendor_name#$vendor_name#g" \
-        | sed "s#vendor_slug#$vendor_slug#g" \
-        | sed "s#:package_name#$package_name#g" \
-        | sed "s#package_slug#$package_slug#g" \
-        | sed "s#wp-starter#$package_slug#g" \
-        | sed "s#:package_description#$package_description#g" \
-        | sed "#^\[\]\(delete\) #d" \
+          sed "s#:author_name#$e_author_name#g" \
+        | sed "s#:author_username#$e_author_username#g" \
+        | sed "s#author@domain.com#$e_author_email#g" \
+        | sed "s#:author_url#$e_vendor_url#g" \
+        | sed "s#:vendor_url#$e_vendor_url#g" \
+        | sed "s#:vendor_name#$e_vendor_name#g" \
+        | sed "s#vendor_slug#$e_vendor_slug#g" \
+        | sed "s#:package_name#$e_package_name#g" \
+        | sed "s#package_slug#$e_package_slug#g" \
+        | sed "s#wp-starter#$e_package_slug#g" \
+        | sed "s#:package_description#$e_package_description#g" \
+        | sed '/^\[\](delete) /d' \
         > "$temp_file"
         rm -f "$file"
         mv "$temp_file" "$new_file"

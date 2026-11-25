@@ -5,10 +5,11 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use Symfony\Component\HttpFoundation\Request;
 
 // Load the environment variables.
-Dotenv::createImmutable(realpath(__DIR__ . '/../'))->safeLoad();
+$dotenv = Dotenv::createImmutable(realpath(__DIR__ . '/../'));
+$dotenv->safeLoad();
+$dotenv->required('WP_HOME')->notEmpty();
 
 // Set the environment type.
 define('WP_ENVIRONMENT_TYPE', env('WP_ENVIRONMENT_TYPE', 'production'));
@@ -46,8 +47,8 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
     $_SERVER['HTTPS'] = 'on';
 }
 
-// Set the home url to the current domain.
-define('WP_HOME', env('WP_HOME', Request::createFromGlobals()->getSchemeAndHttpHost()));
+// Set the home url.
+define('WP_HOME', env('WP_HOME'));
 
 // Set the WordPress directory path.
 define('WP_SITEURL', env('WP_SITEURL', sprintf('%s/%s', WP_HOME, env('WP_DIR', 'wordpress'))));

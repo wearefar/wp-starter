@@ -106,7 +106,7 @@ if (! function_exists('image')) {
         if (is_string($image)) {
             return sprintf(
                 '<img src="%1$s" %2$s>',
-                $image,
+                esc_url($image),
                 implode(' ', array_map(function($key, $value) {
                     return sprintf('%s="%s"', $key, esc_attr($value));
                 }, array_keys($attributes), $attributes))
@@ -196,6 +196,10 @@ if (! function_exists('get_menu_items_by_location')) {
         }
 
         $menu = wp_get_nav_menu_object($locations[$location]);
+
+        if (!$menu) {
+            return null;
+        }
 
         return wp_get_nav_menu_items($menu->term_id, [
             'update_post_term_cache' => false
