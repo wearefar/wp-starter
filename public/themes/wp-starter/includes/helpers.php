@@ -15,30 +15,19 @@ if (!function_exists('svg')) {
             $class = '';
         }
 
-        $attrs = array_merge([
-            'class' => $class,
-        ], $attrs);
-
-        array_walk($attrs, function (&$value, $attr) {
-            $value = sprintf('%s="%s"', $attr, $value);
-        });
-
-        $attrs = implode(' ', $attrs);
-
-        $theme_path = get_stylesheet_directory();
-
-        $path = "$theme_path/assets/svg/$name.svg";
+        $path = get_stylesheet_directory() . "/assets/svg/$name.svg";
 
         if (!file_exists($path)) {
             return;
         }
 
-        $svg = file_get_contents($path);
+        $attributes = attributes(array_merge(['class' => $class], $attrs));
 
-        return str_replace(
-            '<svg',
-            sprintf('<svg %s', $attrs),
-            $svg
+        return preg_replace(
+            '/<svg/',
+            rtrim("<svg $attributes"),
+            file_get_contents($path),
+            1
         );
     }
 }
@@ -80,12 +69,12 @@ if (!function_exists('component')) {
     /**
      * Renders a specific component template part with optional arguments.
      *
-     * @param string $name The name of the component template file (without extension).
+     * @param string $name The name of the component template file (without extension). Dots load from subdirectories: 'post.card' renders components/post/card.php.
      * @param string|array $args Optional associative array of variables to pass to the template.
      * @return mixed The return value of get_template_part(), typically void, but could be manipulated by filters.
      */
     function component(string $name, string|array $args = []) {
-        return get_template_part('components/' . $name, null, (array) $args);
+        return get_template_part('components/' . str_replace('.', '/', $name), null, (array) $args);
     }
 }
 
@@ -104,6 +93,8 @@ if (! function_exists('image')) {
         }
 
         if (is_string($image)) {
+            $attributes += ['alt' => 'Placeholder image'];
+
             return sprintf(
                 '<img src="%1$s" %2$s>',
                 esc_url($image),
@@ -119,7 +110,7 @@ if (! function_exists('image')) {
 
 if (!function_exists('markdown')) {
     function markdown(string $markdown) {
-        $converter = new League\CommonMark\CommonMarkConverter();
+        static $converter = new League\CommonMark\GithubFlavoredMarkdownConverter();
 
         $html = wp_kses_post($converter->convert($markdown)->getContent());
 
@@ -129,9 +120,11 @@ if (!function_exists('markdown')) {
 
 if (!function_exists('ujoin')) {
     /**
-     * Join an array into a readable string with commas and "and".
+     * Join an array into a readable string: ujoin(['a', 'b', 'c'], ', ', ' and ') gives "a, b and c".
      *
      * @param array $items List of strings to join.
+     * @param string $glue Separator between items.
+     * @param string $finalGlue Optional. Separator before the last item.
      * @return string The formatted string.
      */
     function ujoin(array $items, string $glue, string $finalGlue = ''): string
@@ -140,6 +133,7 @@ if (!function_exists('ujoin')) {
             return implode($glue, $items);
         }
 
+        $items = array_values($items);
         $count = count($items);
 
         if ($count === 0) {
@@ -150,7 +144,58 @@ if (!function_exists('ujoin')) {
             return $items[0];
         }
 
-        return implode(', ', array_slice($items, 0, -1)) . $finalGlue . end($items);
+        return implode($glue, array_slice($items, 0, -1)) . $finalGlue . end($items);
+    }
+}
+
+if (! function_exists('attributes')) {
+    /**
+     * Renders an array as HTML attributes.
+     * Null, empty string and false values are left out, and true renders the name alone, as in "disabled".
+     */
+    function attributes(array $attributes): string
+    {
+        $attributes = array_filter($attributes, fn ($value) => $value !== null && $value !== '' && $value !== false);
+
+        return implode(' ', array_map(
+            fn ($key, $value) => $value === true ? esc_attr($key) : sprintf('%s="%s"', esc_attr($key), esc_attr($value)),
+            array_keys($attributes),
+            $attributes,
+        ));
+    }
+}
+
+if (! function_exists('get_page_index')) {
+    /**
+     * Adds ids to the h2 and h3 of an HTML string, keeping existing ones, and lists them for an index.
+     * Returns the HTML with the ids and the sections, each h2 with its h3 as subsections.
+     */
+    function get_page_index(string $html): array
+    {
+        $document = Dom\HTMLDocument::createFromString("<!doctype html><body>$html", LIBXML_NOERROR);
+        $sections = [];
+
+        foreach ($document->querySelectorAll('h2, h3') as $heading) {
+            $title = trim($heading->textContent);
+
+            if ($heading->id === '') {
+                $id = $base = sanitize_title($title);
+                for ($i = 2; $document->getElementById($id); $i++) {
+                    $id = "$base-$i";
+                }
+                $heading->id = $id;
+            }
+
+            $section = ['id' => $heading->id, 'title' => $title];
+
+            if ($heading->localName === 'h2') {
+                $sections[] = $section + ['subsections' => []];
+            } elseif ($sections) {
+                $sections[array_key_last($sections)]['subsections'][] = $section;
+            }
+        }
+
+        return [$document->body->innerHTML, $sections];
     }
 }
 

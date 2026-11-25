@@ -21,4 +21,8 @@ npm run dev
 npm run build
 ```
 
-For component structure, ACF, translatable strings, code and frontend conventions, and build/demo template routing, see [docs/architecture.md](docs/architecture.md).
+## Docs
+
+- [docs/architecture.md](docs/architecture.md): component structure, ACF, translatable strings, code, frontend and accessibility conventions, and build/demo template routing.
+- [docs/decisions.md](docs/decisions.md): decisions and open proposals. Read it before starting work; comment on a proposal in a *Comments* section under the entry.
+- [docs/specifications.md](docs/specifications.md): what each content type and component shows, as the project defines it.

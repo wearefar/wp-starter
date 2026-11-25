@@ -19,6 +19,8 @@ The theme's `component()` helper is defined in `includes/helpers.php`. It delega
 component('example', ['title' => 'Welcome']);
 ```
 
+Group related components in a subdirectory and load them with dot notation: `component('post.card')` renders `components/post/card.php`.
+
 In the component template, WordPress exposes the passed values in `$args`. Every component defines enough defaults to render without database content, and merges the arguments it receives with them using `wp_parse_args()`. Escape values for their output context (`esc_html()`, `esc_attr()`, `esc_url()`).
 
 `$args` is always an array in a component: `load_template()` takes it as a parameter that defaults to `[]`. Declare it with a `/** @var array $args */` annotation at the top, for the editor, and pass it to `wp_parse_args()` as it is, without `$args ?? []`.
@@ -121,10 +123,14 @@ public function title(): string
 Use the helpers in `includes/helpers.php` instead of duplicating component-loading or asset logic:
 
 - `component()` loads a component template and passes its arguments.
-- `image()` renders an attachment ID or an image URL. Configure ACF image fields to return an ID or URL; the helper doesn't accept ACF's array return format.
-- `svg()` renders an SVG from `assets/svg/`. See [Icons](#icons).
+- `image()` renders an attachment ID or an image URL. A URL, which is how components give their sample images, gets the `alt` «Placeholder image» unless you pass one. Configure ACF image fields to return an ID or URL; the helper doesn't accept ACF's array return format.
+- `svg()` renders an SVG from `assets/svg/`, with its size as a class. See [Icons](#icons).
 - `asset()` returns a URL under the theme's `assets/` directory.
-- `markdown()` converts Markdown to HTML, filters it with `wp_kses_post()` and runs shortcodes. Wrap its output in `prose` to style it. Use it for Markdown content instead of creating a converter.
+- `attributes()` renders an array as HTML attributes. It leaves out `null`, `''` and `false`, writes the name alone for `true`, and escapes the rest. Use it for an attribute that may be empty, such as a section's `id`.
+- `markdown()` converts GitHub-flavored Markdown to HTML, filters it with `wp_kses_post()` and runs shortcodes. Wrap its output in `prose` to style it. Use it for Markdown content instead of creating a converter.
+- `get_page_index()` gives every h2 and h3 of an HTML string an id, keeping the editor's, and returns the HTML with the list of headings, for a page index.
+- `widont()` prevents a single-word last line in headings and short text.
+- `ujoin()` joins a list into a readable string: `ujoin($items, ', ', ' and ')` gives "a, b and c".
 
 ### Icons
 
@@ -204,7 +210,16 @@ Code should read on its own, without comments to explain it.
 - Don't set a fixed width or height on an element whose size depends on its content, such as a button, tag or label: long or translated text breaks it. Reproduce the design's size with padding, gaps or `justify-between`.
 - Size columns and cards with fractions of their row (`w-1/3`, `flex-1`), not fixed widths.
 - Fixed sizes are fine for elements without variable content, such as square icon buttons.
+- A button never sets its own width; its container does. In a `flex-col` column it stretches to the column's width, and in a centered row it shrinks to its content. To make stacked buttons the same width, put them in a column with `w-fit`, so they all match the longest one.
 - Keep markup flat: don't add wrapper elements only for spacing, unless they make the code more readable.
+
+### Accessibility
+
+- Text meets WCAG AA contrast against its background: 4.5:1, or 3:1 for large text. When a design color falls short, adjust the token or add one, and record it in `docs/decisions.md`.
+- A button or link with only an icon has an accessible name: `aria-label`, or screen-reader text with `sr-only`.
+- An element that opens a modal or runs an action is a `<button type="button">`; an element that goes to another URL is an `<a>`. A modal is a native `<dialog>`: Esc closes it and focus goes back to the element that opened it.
+- A link that opens in a new tab (`target="_blank"`) says so with screen-reader text, such as «(opens in a new tab)».
+- Every interaction works with the keyboard and keeps a visible focus. Don't remove the focus outline without a replacement.
 
 ### Responsive by default
 
@@ -218,7 +233,7 @@ Use Tailwind's `font-*`, `text-*`, `leading-*`, and `tracking-*` utilities for t
 
 Each `text-*` size carries Tailwind's default line height. Add a `leading-*` class only when the design needs a different one, and then use Tailwind's standard scale (`leading-tight`, `leading-snug`, …) rather than a custom utility.
 
-The `@tailwindcss/typography` plugin provides `prose` styles for long-form or CMS-generated HTML. Its setup is in `resources/css/typography.css`; configure its generic defaults to match the project's fonts, colors, and type scale, using project tokens where possible. Load that stylesheet from `resources/css/app.css` before using `prose` classes. Prefer ordinary utilities for component-authored markup.
+For long-form or CMS-generated HTML, use the `prose` class from the `@tailwindcss/typography` plugin. It is loaded in `resources/css/typography.css`, which `resources/css/app.css` imports, and configured in `resources/css/tailwind.config.js` to match the project's fonts, colors, and type scale, using project tokens where possible. `prose` inherits the text color of its section. Set the size with the prose size modifiers (`prose prose-lg xl:prose-xl`), not `text-*` utilities, and don't override its width with `max-w-*`. `prose-lead` makes the first paragraph a lead. Prefer ordinary utilities for component-authored markup.
 
 ### Alpine component logic
 
@@ -266,4 +281,4 @@ Use Alpine for simple interactions. Add a package only when a feature needs capa
   Alpine.plugin(collapse)
   ```
 
-Preserve keyboard and reduced-motion accessibility in every interaction.
+Preserve keyboard and reduced-motion accessibility in every interaction (see [Accessibility](#accessibility)).
