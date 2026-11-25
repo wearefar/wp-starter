@@ -21,4 +21,4 @@ npm run dev
 npm run build
 ```
 
-For component structure, frontend conventions, and build/demo template routing, see [docs/architecture.md](docs/architecture.md).
+For component structure, ACF, translatable strings, code and frontend conventions, and build/demo template routing, see [docs/architecture.md](docs/architecture.md).
