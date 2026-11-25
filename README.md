@@ -19,6 +19,14 @@ DB_USER=username
 DB_PASSWORD=password
 ```
 
+`.env.example` uses production-safe values. For local development, change these in your `.env`:
+
+```
+WP_ENVIRONMENT_TYPE=local
+WP_DEBUG=true
+WP_DEBUG_DISPLAY=true
+```
+
 Add also the Salt Keys to your environment file. [Visit the salt key generator](https://wordplate.github.io/salt) and copy the randomly generated keys to your `.env` file.
 
 ### Public Directory
